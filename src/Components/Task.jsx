@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import "./task.css"
 
 const Task = ({task , desc, id , deleteTask, editTask, isCompleted , setIsCompleted}) => {
   
@@ -7,23 +8,29 @@ const Task = ({task , desc, id , deleteTask, editTask, isCompleted , setIsComple
     // },[])
       
   return (
-    <div>
+    <div className='showDetails'>
       
        {/* {(task !== "" && desc !== "" ) &&  */}
-       <li>
+       
+        <div className="check">
             <input checked={isCompleted}
-              type="checkbox"
-              onChange={()=>setIsCompleted(!isCompleted)} 
+                  type="checkbox"
+                  onChange={()=>setIsCompleted(!isCompleted)} 
             />
-              Task : 
-              {task}
-              <br />
+        </div>
+        <div className="task">
+            Task :   
+            {task}
+        </div>
+           <div className="desc">
               Description:
               {desc}
-            <br />
-            <button onClick={()=>deleteTask(id)}>Delete</button>
-            <button onClick={()=>editTask(id)}>Edit</button>
-        </li>
+           </div>
+            
+            <div className="delete"> <button className='deleteBtn' onClick={()=>deleteTask(id)}>Delete</button></div>
+           <div className="edit"><button className='editBtn' onClick={()=>editTask(id)}>Edit</button></div>
+            
+      
 
     </div>
     

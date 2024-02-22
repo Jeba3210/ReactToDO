@@ -2,7 +2,7 @@ import React , {useEffect, useState} from 'react';
 import Task from './Task';
 import { v4 as uuid } from 'uuid';
 
-// const initialTask = { : "", des : "", isCompleted : false, key : ""};
+
 function Todo(){
 
     const [details,setDetails] = useState([]);
@@ -74,36 +74,55 @@ function Todo(){
 
     return(
         <div>
-            <h1> Todo </h1>
-             <form onSubmit={implementSubmit}>
-                <label htmlFor='task'>Your Task</label>
-                <input type="text" id='task'
-                 placeholder='Enter your task'
-                 onChange={e =>setData(e.target.value)}
-                value={data}
-                 />
-                <label htmlFor='description'>Description</label>
-                <input type="text"
-                 id='description' 
-                 placeholder='Describe your task'
-                onChange={e => setDesc(e.target.value)}
-                value={desc}
-                 />
-                 {
-                    toggleSubmitBtn ? <button>Submit</button> : <button>Update</button>
-                 }
+            <div className="mainInput">
+                <h1 className='heading'> TO DO LIST </h1>
+                    <div className="inputBox">
+                        <form className='form' onSubmit={implementSubmit}>
+                            <div className="input1">
+                                <label htmlFor='task' className='label'>Your Task : </label>
+                                <input type="text" 
+                                       className='input'
+                                       id='task'
+                                       placeholder='Enter your task'
+                                       onChange={e =>setData(e.target.value)}
+                                       value={data}
+                                />
+                            </div>
+                            <div className="input2">
+                                <label htmlFor='description' className='label'>Description : </label>
+                                <input type="text"
+                                        className='input'
+                                        id='description' 
+                                        placeholder='Describe your task'
+                                        onChange={e => setDesc(e.target.value)}
+                                        value={desc}
+                                />
+                            </div>
+                            
+                            <div className="submit">
+                                    {
+                                        toggleSubmitBtn ? <button className='submitBtn'>Submit</button> : <button className='submitBtn'>Update</button>
+                                    }
+                            </div>
+                           
+                            
+                        </form> 
+                </div>
                 
-             </form> 
-
+            </div>
             
+
+            <div className="showDetails">
                 <ul>
-                {details.map((task) =>{
-                    return (
-                        <Task key={task.key} id={task.key} task={task.data} desc={task.desc} isCompleted={isCompleted} setIsCompleted={setIsCompleted} deleteTask={deleteTask} editTask={editTask} implementSubmit={implementSubmit}/>
-                      
-                       )
-                })}
-           </ul>
+                    {details.map((task) =>{
+                        return (
+                            <Task key={task.key} id={task.key} task={task.data} desc={task.desc} isCompleted={isCompleted} setIsCompleted={setIsCompleted} deleteTask={deleteTask} editTask={editTask} implementSubmit={implementSubmit}/>
+                            
+                            )
+                        })}
+                </ul>
+            </div>
+               
          
          </div>
     )
