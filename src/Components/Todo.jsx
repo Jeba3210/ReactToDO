@@ -4,39 +4,49 @@ import { v4 as uuid } from 'uuid';
 
 // const initialTask = { : "", des : "", isCompleted : false, key : ""};
 function Todo(){
-    // const [task,setTask] = useState("");
-    // const [desc,setDesc] = useState("");
-    // const [isCompleted, setIsCompleted] = useState(false);
+
     const [details,setDetails] = useState([]);
-    // const [task, setTask] = useState(initialTask);
+  
+        //     useEffect(()=>{
+        //     },[])
 
-//    console.log(task);
-//     useEffect(()=>{
-
-    //     },[])
-
-    const [task,setTask] = useState('');
+    const [data,setData] = useState('');
     const [desc,setDesc] = useState('');
     const [isCompleted, setIsCompleted] = useState(false);
-    const[index , setIndex] = useState(0)
+
+    const [toggleSubmitBtn , setToggleSubmitBtn] = useState(true);
+    const [ isEdit, setIsEdit] = useState(null);
 
     function implementSubmit(e) {
         e.preventDefault();
-        setIndex(index+1);
-        console.log(index);
-        const taskWithKey = {
-            task,
-            desc,
-            isCompleted,
-            index,
-            key: uuid()};
-        setDetails([...details,taskWithKey]);
+        if(!data || !desc){
+            alert("Please fill the fields")
+        }else if(data && desc && !toggleSubmitBtn){
+             setDetails(details.map((task, e) => {
+                if(task.key === isEdit){
+                    return {...task , data : data,desc : desc}
+                }
+                return task;
 
-        // setArr([...arr , task , task.key : uuid()])
-        // setTask(initialTask);
-        setTask('');
-        setDesc('');
-
+             })
+             )
+             setToggleSubmitBtn(true);
+             setIsEdit(null);
+             setData('');
+             setDesc('');
+        }else{
+            const taskWithKey = {
+                data,
+                desc,
+                isCompleted,
+                key: uuid()};
+            setDetails([...details,taskWithKey]);
+    
+            setData('');
+            setDesc('');
+    
+        }
+        
     }
 
     function deleteTask(key){
@@ -47,29 +57,16 @@ function Todo(){
         console.log(details);   
     }
 
-    function editTask(e ,index){
-       const newtask = prompt("Enter new task");
-       console.log(newtask);
-      
-       const newDesc = prompt("Enter new description");
-       console.log(newDesc);
-
-       details[index].task = newtask;
-       details[index].desc = newDesc
-
-    //    const newDetails = [...details];
-
-    //    newDetails[index].task = newtask;
-    //    setTask(newDetails[index].task );
-    //    newDetails[index].desc = newDesc;
-    //    setDesc(newDetails[index].desc );
-
-    //    setDetails(newDetails);
-    //    console.log(newDetails[index].task);
-    //    newDetails[index] = setTask(newtask);
-
-    // if(task.key == key){setDetails([...details , newtask, newDesc])};
-    
+    function editTask(id){
+      const newEditItem = details.find((task) => {
+            return task.key == id;
+       })
+    //    console.log(newEditItem);
+       setToggleSubmitBtn(false);
+       setData(newEditItem.data);
+       setDesc(newEditItem.desc);
+       setIsEdit(id);
+       console.log(isEdit);
        
     }
    
@@ -82,8 +79,8 @@ function Todo(){
                 <label htmlFor='task'>Your Task</label>
                 <input type="text" id='task'
                  placeholder='Enter your task'
-                 onChange={e =>setTask(e.target.value)}
-                value={task}
+                 onChange={e =>setData(e.target.value)}
+                value={data}
                  />
                 <label htmlFor='description'>Description</label>
                 <input type="text"
@@ -92,14 +89,17 @@ function Todo(){
                 onChange={e => setDesc(e.target.value)}
                 value={desc}
                  />
-                <button>Submit</button>
+                 {
+                    toggleSubmitBtn ? <button>Submit</button> : <button>Update</button>
+                 }
+                
              </form> 
 
             
                 <ul>
                 {details.map((task) =>{
                     return (
-                        <Task key={task.key} id={task.key} index1={task.index} task1={task.task} desc1={task.desc} isCompleted={isCompleted}  deleteTask={deleteTask} editTask={editTask} implementSubmit={implementSubmit}/>
+                        <Task key={task.key} id={task.key} task={task.data} desc={task.desc} isCompleted={isCompleted} setIsCompleted={setIsCompleted} deleteTask={deleteTask} editTask={editTask} implementSubmit={implementSubmit}/>
                       
                        )
                 })}
